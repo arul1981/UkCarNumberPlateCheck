@@ -10,7 +10,10 @@ import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CarTaxCheckSteps {
 
@@ -36,7 +39,7 @@ public class CarTaxCheckSteps {
     }
 
     @Then("user get the details of the car registration numbers in carcheck home page")
-    public void userVerifyTheDetailsOfTheCarRegistrationNumberInCarCheckHomePage(DataTable dataTable) {
+    public void userVerifyTheDetailsOfTheCarRegistrationNumberInCarCheckHomePage(DataTable dataTable)  {
         List<String> requiredDetails = dataTable.asList();
         for(String carNumber: carRegValues){
             searchCarRegistrationDetails(carNumber);
@@ -51,25 +54,27 @@ public class CarTaxCheckSteps {
         carTaxCheckPageObjects.clickFreeCarCheckBtn();
     }
 
-    private void getCarDetails(List<String> requiredDetails){
+    private void getCarDetails(List<String> requiredDetails) {
         VehicleDetailsDto vehicleDetailsDto = new VehicleDetailsDto();
         for(String carDetail: requiredDetails) {
-            switch (carDetail){
-                case "Registration":
-                    vehicleDetailsDto.setCarRegistration(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
-                    break;
-                case "Make":
-                    vehicleDetailsDto.setCarMake(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
-                    break;
-                case "Model":
-                    vehicleDetailsDto.setCarModel(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
-                    break;
-                case "Colour":
-                    vehicleDetailsDto.setCarColor(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
-                    break;
-                case "Year":
-                    vehicleDetailsDto.setCarYear(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
-                    break;
+            if(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail).length() > 0){
+                switch (carDetail) {
+                    case "Registration":
+                        vehicleDetailsDto.setCarRegistration(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
+                        break;
+                    case "Make":
+                        vehicleDetailsDto.setCarMake(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
+                        break;
+                    case "Model":
+                        vehicleDetailsDto.setCarModel(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
+                        break;
+                    case "Colour":
+                        vehicleDetailsDto.setCarColor(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
+                        break;
+                    case "Year":
+                        vehicleDetailsDto.setCarYear(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
+                        break;
+                }
             }
         }
         listVehicleDetailsDto.add(vehicleDetailsDto);
@@ -77,11 +82,16 @@ public class CarTaxCheckSteps {
 
 
     @And("user compare the details with the output file")
-    public void userCompareTheDetailsWithTheOutputFile() {
-        for(VehicleDetailsDto vehicleDetailsDto:listVehicleDetailsDto){
-            System.out.println(vehicleDetailsDto.getCarRegistration() + "  " + vehicleDetailsDto.getCarColor() + "  "+
-                    vehicleDetailsDto.getCarMake() + "  " + vehicleDetailsDto.getCarModel() + "  "+ vehicleDetailsDto.getCarYear());
-        }
+    public void userCompareTheDetailsWithTheOutputFile() throws IOException {
+        listVehicleDetailsDto =  listVehicleDetailsDto.stream().filter(d -> d!=null).collect(Collectors.toList());
+        listVehicleDetailsDto.forEach(x -> System.out.println(x.getCarRegistration() + " " +x.getCarColor()
+                + " "+x.getCarMake() + " " +x.getCarModel() + " "+ x.getCarYear()));
+
+        List<VehicleDetailsDto> expectedOutput = applicationHelper.getAllOutputFileDetails();
+        List<VehicleDetailsDto> unavailable = expectedOutput.stream().filter
+                (e -> (listVehicleDetailsDto.stream().noneMatch(d -> d.equals(e)))).collect(Collectors.toList());
+
+        System.out.println("Unavailable value in the list :" + unavailable.get(0).getCarRegistration());
     }
 
 }

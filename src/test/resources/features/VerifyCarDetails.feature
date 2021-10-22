@@ -13,5 +13,4 @@ Feature: As a user, I am able to read the given input file and get the car regis
       | Model        |
       | Colour       |
       | Year         |
-    And user verify if all the car details are available
     And user compare the details with the output file
