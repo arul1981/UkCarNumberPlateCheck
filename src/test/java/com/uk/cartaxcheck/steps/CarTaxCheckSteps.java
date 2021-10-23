@@ -10,8 +10,6 @@ import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +55,7 @@ public class CarTaxCheckSteps {
     private void getCarDetails(List<String> requiredDetails) {
         VehicleDetailsDto vehicleDetailsDto = new VehicleDetailsDto();
         for(String carDetail: requiredDetails) {
-            if(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail).length() > 0){
+            if(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail).length() > 0) {
                 switch (carDetail) {
                     case "Registration":
                         vehicleDetailsDto.setCarRegistration(carTaxCheckPageObjects.getVehicleIdentityDetailsFromCarTaxCheckPage(carDetail));
@@ -83,7 +81,12 @@ public class CarTaxCheckSteps {
 
     @And("user compare the details with the output file")
     public void userCompareTheDetailsWithTheOutputFile() throws IOException {
-        listVehicleDetailsDto =  listVehicleDetailsDto.stream().filter(d -> d!=null).collect(Collectors.toList());
+        listVehicleDetailsDto =  listVehicleDetailsDto.stream().filter(vehicleDetailsDto -> vehicleDetailsDto.getCarRegistration() != null
+                || vehicleDetailsDto.getCarYear() != null
+                || vehicleDetailsDto.getCarModel() != null
+                || vehicleDetailsDto.getCarColor() != null
+                || vehicleDetailsDto.getCarMake() != null).collect(Collectors.toList());
+
         listVehicleDetailsDto.forEach(x -> System.out.println(x.getCarRegistration() + " " +x.getCarColor()
                 + " "+x.getCarMake() + " " +x.getCarModel() + " "+ x.getCarYear()));
 
