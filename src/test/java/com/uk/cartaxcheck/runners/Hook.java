@@ -1,29 +1,21 @@
 package com.uk.cartaxcheck.runners;
 
-import com.uk.cartaxcheck.pages.BasePage;
-import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.net.MalformedURLException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.openqa.selenium.support.PageFactory.initElements;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Component

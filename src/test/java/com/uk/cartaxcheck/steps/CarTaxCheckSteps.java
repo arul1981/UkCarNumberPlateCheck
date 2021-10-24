@@ -81,13 +81,13 @@ public class CarTaxCheckSteps {
 
     @And("user compare the details with the output file")
     public void userCompareTheDetailsWithTheOutputFile() throws IOException {
-        listVehicleDetailsDto =  listVehicleDetailsDto.stream().filter(vehicleDetailsDto -> vehicleDetailsDto.getCarRegistration() != null
+        List<VehicleDetailsDto> filterVehicleDetails =  listVehicleDetailsDto.stream().filter(vehicleDetailsDto -> vehicleDetailsDto.getCarRegistration() != null
                 || vehicleDetailsDto.getCarYear() != null
                 || vehicleDetailsDto.getCarModel() != null
                 || vehicleDetailsDto.getCarColor() != null
                 || vehicleDetailsDto.getCarMake() != null).collect(Collectors.toList());
 
-        listVehicleDetailsDto.forEach(x -> System.out.println(x.getCarRegistration() + " " +x.getCarColor()
+        filterVehicleDetails.forEach(x -> System.out.println(x.getCarRegistration() + " " +x.getCarColor()
                 + " "+x.getCarMake() + " " +x.getCarModel() + " "+ x.getCarYear()));
 
         List<VehicleDetailsDto> expectedOutput = applicationHelper.getAllOutputFileDetails();
