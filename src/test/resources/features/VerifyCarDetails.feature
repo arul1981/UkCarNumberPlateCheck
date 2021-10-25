@@ -8,9 +8,4 @@ Feature: As a user, I am able to read the given input file and get the car regis
     Given user is on the cartaxcheck.co.uk website
     When user get all the UK car registration numbers from the file
     Then user get the details of the car registration numbers in carcheck home page
-      | Registration |
-      | Make         |
-      | Model        |
-      | Colour       |
-      | Year         |
     And user compare the details with the output file

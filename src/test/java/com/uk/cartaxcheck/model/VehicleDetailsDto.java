@@ -62,7 +62,9 @@ public class VehicleDetailsDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VehicleDetailsDto that = (VehicleDetailsDto) o;
-        return carRegistration.equals(that.carRegistration) && carModel.equals(that.carModel) && carMake.equals(that.carMake) && carColor.equals(that.carColor) && carYear.equals(that.carYear);
+        return carRegistration.equals(that.carRegistration) &&
+                carModel.equals(that.carModel) && carMake.equals(that.carMake) &&
+                carColor.equals(that.carColor) && carYear.equals(that.carYear);
     }
 
     @Override
