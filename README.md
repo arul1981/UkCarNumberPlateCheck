@@ -13,6 +13,7 @@ UKCarNumberPlateCheck project test steps
 5. Highlight/fail the test for any mismatch
 
 Project Requirements
+
 JDK 8
 Maven 3.6
 
